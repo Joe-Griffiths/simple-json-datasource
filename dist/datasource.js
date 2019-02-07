@@ -15,6 +15,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function connect(){
+  if ("WebSocket" in window)
+ {var l = window.location;
+  const ws = new WebSocket("ws://localhost:5000");    //Opening ws to kdb on port 5000
+  return { status: "success", message: "Data source is working", title: "Success" };
+ }else alert("WebSockets not supported on your browser.");
+}
+
+function send(msg)
+  {
+   ws.send(msg);
+   out.value="sent "+msg;
+   return false;
+  }
+
+
+
 var GenericDatasource = exports.GenericDatasource = function () {
   function GenericDatasource(instanceSettings, $q, backendSrv, templateSrv) {
     _classCallCheck(this, GenericDatasource);
@@ -58,16 +75,22 @@ var GenericDatasource = exports.GenericDatasource = function () {
     }
   }, {
     key: 'testDatasource',
-    value: function testDatasource() {
+      value:function testDatasource(){
+        connect()
+        //send("testing123")
+        return { status: "success", message: "Data source is working", title: "Success" };
+      }
+
+    /*value: function testDatasource() {
       return this.doRequest({
-        url: this.url + '/',
+        url: 'http//:localhost:5001' + '/',
         method: 'GET'
       }).then(function (response) {
         if (response.status === 200) {
           return { status: "success", message: "Data source is working", title: "Success" };
         }
       });
-    }
+    }*/
   }, {
     key: 'annotationQuery',
     value: function annotationQuery(options) {
@@ -120,8 +143,8 @@ var GenericDatasource = exports.GenericDatasource = function () {
   }, {
     key: 'doRequest',
     value: function doRequest(options) {
-      options.withCredentials = this.withCredentials;
-      options.headers = this.headers;
+      //options.withCredentials = this.withCredentials;
+      //options.headers = this.headers;
 
       return this.backendSrv.datasourceRequest(options);
     }

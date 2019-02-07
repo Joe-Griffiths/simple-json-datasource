@@ -1,6 +1,6 @@
 {
-  "name": "KDB-Adaptor",
-  "id": "grafana kdb datasource",
+  "name": "SimpleJson",
+  "id": "grafana-simple-json-datasource",
   "type": "datasource",
 
   "partials": {
@@ -11,21 +11,21 @@
   "annotations": true,
 
   "info": {
-    "description": "kdb datasource",
+    "description": "simple json datasource",
     "author": {
-      "name": "Joe Griffiths",
+      "name": "Grafana Labs",
       "url": "https://grafana.com"
     },
     "logos": {
-      "small": "img/AquaQ.JPEG",
-      "large": "img/AquaQ.JPEG"
+      "small": "img/simpleJson_logo.svg",
+      "large": "img/simpleJson_logo.svg"
     },
     "links": [
       {"name": "GitHub", "url": "https://github.com/grafana/simple-json-datasource"},
       {"name": "MIT License", "url": "https://github.com/grafana/simple-json-datasource/blob/master/LICENSE"}
     ],
-    "version": "1.0.0",
-    "updated": "2019-02-06"
+    "version": "1.4.0",
+    "updated": "2018-06-20"
   },
 
   "dependencies": {
