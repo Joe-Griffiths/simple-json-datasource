@@ -1,6 +1,6 @@
 {
   "name": "KDB-Adaptor",
-  "id": "grafana kdb datasource",
+  "id": "grafana-kdb-datasource",
   "type": "datasource",
 
   "partials": {

@@ -15,19 +15,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var ws
+
 function connect(){
   if ("WebSocket" in window)
- {var l = window.location;
-  const ws = new WebSocket("ws://localhost:5000");    //Opening ws to kdb on port 5000
+ {
+  ws = new WebSocket("ws://localhost:5000");    //Opening ws to kdb on port 5000
+  ws.onopen = function (e) { send("connection opened-response from grafana")};
   return { status: "success", message: "Data source is working", title: "Success" };
- }else alert("WebSockets not supported on your browser.");
+}
+ else alert("WebSockets not supported on your browser.");
+ return { status: "success", message: "Data source is working", title: "Success" };
 }
 
 function send(msg)
   {
    ws.send(msg);
-   out.value="sent "+msg;
-   return false;
+   return msg;
   }
 
 
@@ -66,19 +70,20 @@ var GenericDatasource = exports.GenericDatasource = function () {
       } else {
         query.adhocFilters = [];
       }
+      
 
-      return this.doRequest({
-        url: this.url + '/query',
-        data: query,
-        method: 'POST'
-      });
+      return ws.send(JSON.stringify(query))
+
+      //return this.doRequest({
+      //  url: this.url + '/query',
+      //  data: query,
+       // method: 'POST'
+      //});
     }
   }, {
     key: 'testDatasource',
       value:function testDatasource(){
-        connect()
-        //send("testing123")
-        return { status: "success", message: "Data source is working", title: "Success" };
+        return connect();
       }
 
     /*value: function testDatasource() {
@@ -107,27 +112,31 @@ var GenericDatasource = exports.GenericDatasource = function () {
         rangeRaw: options.rangeRaw
       };
 
-      return this.doRequest({
+      return ws.send(JSON.stringify(query))
+
+      /*return this.doRequest({
         url: this.url + '/annotations',
         method: 'POST',
         data: annotationQuery
       }).then(function (result) {
         return result.data;
       });
+      */
     }
   }, {
     key: 'metricFindQuery',
     value: function metricFindQuery(query) {
-      var interpolated = {
-        target: this.templateSrv.replace(query, null, 'regex')
-      };
-
-      return this.doRequest({
+      //var interpolated = {
+      //  target: this.templateSrv.replace(query, null, 'regex')
+      //};
+      return ws.send(JSON.stringify(query))
+    }
+      /*return this.doRequest({
         url: this.url + '/search',
         data: interpolated,
         method: 'POST'
       }).then(this.mapToTextValue);
-    }
+    } */
   }, {
     key: 'mapToTextValue',
     value: function mapToTextValue(result) {
@@ -145,6 +154,7 @@ var GenericDatasource = exports.GenericDatasource = function () {
     value: function doRequest(options) {
       //options.withCredentials = this.withCredentials;
       //options.headers = this.headers;
+      send(options);
 
       return this.backendSrv.datasourceRequest(options);
     }
